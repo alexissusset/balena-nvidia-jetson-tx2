@@ -1,0 +1,40 @@
+## Connectivity
+FROM resin/%%RESIN_MACHINE_NAME%%-python:3
+
+## Install base packages
+RUN apt-get update && apt-get install -y apt-utils bzip2 usbutils openssh-server \
+    curl sudo unp git net-tools curl modemmanager watchdog logrotate vim
+
+## Install base Python modules
+RUN apt-get install -y --no-install-recommends python-pip \
+	python-wheel python-requests python-dev python-setuptools build-essential \
+	libcurl4-gnutls-dev g++ pkg-config libdbus-1-dev libdbus-glib-1-dev 
+RUN pip install --upgrade pip==9.0.3
+RUN pip install python-networkmanager
+
+#Deploying App
+WORKDIR /usr/src/app
+
+# Copy files app files to container
+COPY src/entry.sh /usr/bin/entry.sh
+COPY src/start.sh /usr/src/app
+COPY src/reconnect.sh /usr/src/app
+COPY src/bashrc /root/.bashrc
+COPY src/motd /etc/motd
+COPY src/soracom.py /usr/src/app
+COPY src/logrotate.conf /usr/src/app
+
+RUN chmod 777 /usr/src/app/start.sh
+RUN chmod 777 /usr/src/app/reconnect.sh
+RUN chmod 777 /usr/bin/entry.sh
+RUN chmod 644 /usr/src/app/logrotate.conf
+
+RUN systemctl disable ModemManager
+RUN systemctl mask ModemManager
+
+ENV INITSYSTEM off
+
+# Cleanup
+RUN apt-get -y autoremove && apt-get -y autoclean && apt-get clean && rm -rf /var/cache/apt && rm -rf /tmp/*
+
+CMD ["bash", "/usr/src/app/start.sh"]
