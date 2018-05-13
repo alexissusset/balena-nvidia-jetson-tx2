@@ -44,9 +44,9 @@ services:
     restart: always
     depends_on:
       - connectivity
-  # Cuda Base + OpenCV4Tegra + TensorRT + NVIDIA caffee container
-  caffee:
-    build: ./caffee
+  # Cuda Base + OpenCV4Tegra + TensorRT + NVIDIA caffe container
+  caffe:
+    build: ./caffe
     privileged: true
     restart: always
     depends_on:
@@ -58,12 +58,14 @@ services:
     restart: always
     depends_on:
       - connectivity
+  # Cuda Base + OpenCV4Tegra + TensorRT + Inference container
   inference:
     build: ./inference
     privileged: true
     restart: always
     depends_on:
       - connectivity
+  # Cuda Base + OpenCV4Tegra + TensorRT + NVIDIA caffe + NVIDIA digits container
   digits:
     build: ./digits
     privileged: true
