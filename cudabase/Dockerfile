@@ -42,10 +42,13 @@ RUN ln -sf /usr/lib/aarch64-linux-gnu/tegra/libGL.so /usr/lib/aarch64-linux-gnu/
 # D.R. -- need to do this for some strange reason (for jetson tx2)
 RUN ln -s /usr/lib/aarch64-linux-gnu/libcuda.so /usr/lib/aarch64-linux-gnu/libcuda.so.1
 
-# Cleanup
-RUN apt-get -y autoremove && apt-get -y autoclean && apt-get clean && rm -rf /var/cache/apt && rm -rf /tmp/*
-
 ## Adding in extras
 COPY src/bashrc /root/.bashrc
+
+# Disable systemd
+ENV INITSYSTEM off
+
+# Cleanup
+RUN apt-get -y autoremove && apt-get -y autoclean && apt-get clean && rm -rf /var/cache/apt && rm -rf /tmp/*
 
 CMD exec /bin/bash -c "echo 'online' && trap : TERM INT; sleep infinity & wait"

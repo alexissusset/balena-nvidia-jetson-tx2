@@ -88,6 +88,9 @@ RUN pip install -e /DIGITS
 ## Adding in extras
 COPY src/bashrc /root/.bashrc
 
+# Disable systemd
+ENV INITSYSTEM off
+
 # Cleanup
 RUN apt-get -y autoremove && apt-get -y autoclean && apt-get clean && rm -rf /var/cache/apt && rm -rf /tmp/*
 

@@ -51,10 +51,13 @@ RUN apt-get update && apt-get install -y libavcodec-ffmpeg56 libavformat-ffmpeg5
 # Install libopencv4tegra
 RUN dpkg -i /tmp/libopencv_arm64.deb && dpkg -i /tmp/libopencv-dev_arm64.deb && dpkg -i /tmp/libopencv-python_arm64.deb
 
-# Cleanup
-RUN apt-get -y autoremove && apt-get -y autoclean && apt-get clean && rm -rf /var/cache/apt && rm -rf /tmp/*
-
 ## Adding in extras
 COPY src/bashrc /root/.bashrc
+
+# Disable systemd
+ENV INITSYSTEM off
+
+# Cleanup
+RUN apt-get -y autoremove && apt-get -y autoclean && apt-get clean && rm -rf /var/cache/apt && rm -rf /tmp/*
 
 CMD exec /bin/bash -c "echo 'online' && trap : TERM INT; sleep infinity & wait"

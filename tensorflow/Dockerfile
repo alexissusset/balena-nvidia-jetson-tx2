@@ -72,10 +72,13 @@ ADD src/tensorflow_test.py /usr/src/app/
 # Run validation script if you choose
 CMD [ "/usr/bin/python", "/usr/src/app/tensorflow_test.py"]
 
-# Cleanup
-RUN apt-get -y autoremove && apt-get -y autoclean && apt-get clean && rm -rf /var/cache/apt && rm -rf /tmp/*
-
 ## Adding in extras
 COPY src/bashrc /root/.bashrc
+
+# Disable systemd
+ENV INITSYSTEM off
+
+# Cleanup
+RUN apt-get -y autoremove && apt-get -y autoclean && apt-get clean && rm -rf /var/cache/apt && rm -rf /tmp/*
 
 CMD exec /bin/bash -c "echo 'online' && trap : TERM INT; sleep infinity & wait"
