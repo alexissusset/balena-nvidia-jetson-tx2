@@ -10,12 +10,12 @@ services:
     volumes: 
       - 'resin-data:/data'
   # Python 3 base Resin Jetson TX2 image
-  resinbase:
-    build: ./resinbase
-    privileged: true
-    restart: always
-    volumes: 
-      - 'resin-data:/data'
+##  resinbase:
+##    build: ./resinbase
+##    privileged: true
+##    restart: always
+##    volumes: 
+##      - 'resin-data:/data'
   # Ubuntu is a basic container without drivers, mainly used for development
   ubuntu:
     build: ./ubuntu
