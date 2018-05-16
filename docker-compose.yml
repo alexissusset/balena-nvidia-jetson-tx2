@@ -9,6 +9,8 @@ services:
     restart: always
     volumes: 
       - 'resin-data:/data'
+    expose:
+      - "22"
   # Python 3 base Resin Jetson TX2 image
 ##  resinbase:
 ##    build: ./resinbase
@@ -16,27 +18,27 @@ services:
 ##    restart: always
 ##    volumes: 
 ##      - 'resin-data:/data'
-  # Ubuntu is a basic container without drivers, mainly used for development
-  ubuntu:
-    build: ./ubuntu
-    privileged: true
-    restart: always
-    depends_on:
-      - connectivity
-  # Cuda Base is a basic container with CUDA drivers
-  cudabase:
-    build: ./cudabase
-    privileged: true
-    restart: always
-    depends_on:
-      - connectivity
-  # Cuda Base + TensorRT + OpenCV4Tegra container
-  opencv4tegra:
-    build: ./opencv4tegra
-    privileged: true
-    restart: always
-    depends_on:
-      - connectivity
+####  # Ubuntu is a basic container without drivers, mainly used for development
+####  ubuntu:
+####    build: ./ubuntu
+####    privileged: true
+####    restart: always
+####    depends_on:
+####      - connectivity
+####  # Cuda Base is a basic container with CUDA drivers
+####  cudabase:
+####    build: ./cudabase
+####    privileged: true
+####    restart: always
+####    depends_on:
+####      - connectivity
+####  # Cuda Base + TensorRT + OpenCV4Tegra container
+####  opencv4tegra:
+####    build: ./opencv4tegra
+####    privileged: true
+####    restart: always
+####    depends_on:
+####      - connectivity
   # Cuda Base + OpenCV4Tegra + TensorRT (same as opencv4tegra container)
   tensorrt:
     build: ./tensorrt
